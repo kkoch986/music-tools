@@ -1,0 +1,22 @@
+{
+  "name": "musical",
+  "version": "0.0.0",
+  "description": "some music theory utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "clear && jasmine-node --verbose --coffee spec",
+    "watch":"jasmine-node --verbose --coffee --autotest spec"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script": "^1.8.0",
+    "midi": "^0.9.0",
+    "midi-help": "^0.2.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.11.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
