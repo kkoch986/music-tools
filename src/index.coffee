@@ -101,13 +101,24 @@ console.log "Scale tone #6 in C Major: " + scaleTone2.getNoteFromScale(scale2)
 composer = new Composer();
 console.log composer.getDiatonicChordOptionsForNote(new Note("G", 3), new MajorScale(new Note("G", 3)));
 
-console.log composer.harmonize([ new Note("G", 3), new Note("D", 4), new Note("D", 4), new Note("D", 4), new Note("G", 4) ], new MajorScale( new Note("G", 3) ) )
-
-
-melody = [ new Note("G", 3), new Note("D", 4), new Note("D", 4), new Note("D", 4), new Note("G", 4) ]
+melody = [ 
+  new Note("G", 3, Note.HALF), 
+  new Note("D", 4, Note.HALF), 
+  new Note("D", 4, Note.HALF), 
+  new Note("E", 3, Note.HALF), 
+  new Note("G", 4, Note.DOTTED(Note.HALF)), 
+  new Note("G", 4, Note.QUARTER), 
+  new Note("D", 5, Note.HALF), 
+  new Note("G", 4, Note.HALF),
+]
 scale = new MajorScale( new Note("G", 3) )
-midi.playNotes(
-  melody,
-  () ->
-	midi.playChords(composer.harmonize(melody, scale));
-)
+harmonized = composer.harmonize(melody, scale)
+
+# add a nice cadence to the end V - I
+harmonized.push(scale.getAllDiatonicSevenths()[4])
+harmonized.push(scale.getAllDiatonicTriads(scale.rootNote.octave - 1)[0])
+console.log harmonized
+
+midi.playSequence(melody.slice(0).concat(harmonized))
+
+

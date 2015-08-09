@@ -2,8 +2,11 @@
 # The compser is responsible for actually generating music.
 ##
 notes = require("./notes")
+Chord = notes.Chord
 
 desireableProgression = ["4", "7", "3", "6", "2", "5", "1"]
+# desireableProgression = ["1", "4", "5"]
+# desireableProgression = ["6", "2", "5", "1"]
 
 class Composer
 
@@ -36,10 +39,13 @@ class Composer
 				scale.getScaleToneForNote(candidate.getNotes()[0]) + ""
 			
 			# pick the candidate tone closest to the current position
-			searchSpace = desireableProgression.slice(currentPosition).concat(desireableProgression.slice(0, currentPosition))
+			searchSpace = desireableProgression.slice(currentPosition).concat(desireableProgression.slice(0, currentPosition)).sort( (a,b) -> Math.random() - Math.random() )
+			# TODO: fix this, we want to look at the search space in random order but still pick the closest chrod in the desired progression out of all of them.
 			for s in searchSpace
 				if(candidate_tones.indexOf(s) >= 0)
-					ret.push candidates[candidate_tones.indexOf(s)]
+					console.log s
+					reference = candidates[candidate_tones.indexOf(s)]
+					ret.push new Chord(reference.rootNote, reference.notes, note.duration);
 					currentPosition = desireableProgression.indexOf(s) + 1
 					break 
 

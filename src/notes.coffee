@@ -25,11 +25,15 @@ intervalSymbols = ["P1", "m2", "M2", "m3", "M3", "P4", "d5", "P5", "m6", "M6", "
 # A Basic note, wil laccept a tone and provide some basic functionality on it.
 class Note
 	# TODO: Validate input into constructor.
-	constructor: (@tone, @octave) ->
+	constructor: (@tone, @octave, @duration) ->
 		# TODO: Normalize flat tones or double sharp/double flat tones into tones that are in the allNotes array
 		@octave = @octave ? 4
+		@duration = @duration ? 1 # duration is 1 = whole note
 	midiNote: () ->
 		21 + (12 * @octave) + allNotes.indexOf(@tone)
+	# return the notes
+	getNotes: () -> 
+		return [ this ]
 	toString: () ->
 		@tone + @octave
 	wholeStepAbove: ->
@@ -91,7 +95,8 @@ class Note
 
 # A Chord Class which can determine what type of chord it is...
 class Chord 
-	constructor: (@rootNote, @notes) ->
+	constructor: (@rootNote, @notes, @duration) -> 
+		@duration = @duration ? 1
 	toString: () ->
 		@rootNote.tone + " " + this.getType() + " (" + @notes.join(",") + ")"	
 	inspect: () ->
@@ -350,6 +355,13 @@ class LocrianMode extends StepBasedScale
 		super @rootNote, ["H", "W", "W", "H", "W", "W", "W"]
 
 # Export everything
+Note.WHOLE 		= 1.0;
+Note.HALF 		= 1.0 / 2.0;
+Note.QUARTER 	= 1.0 / 4.0;
+Note.EIGTH		= 1.0 / 8.0;
+Note.SIXTEENTH	= 1.0 / 16.0;
+Note.DOTTED = (value) -> value * 1.5
+
 (exports ? this).Note = Note
 (exports ? this).Chord = Chord
 (exports ? this).ScaleTone = ScaleTone
